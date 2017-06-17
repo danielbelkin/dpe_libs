@@ -181,5 +181,31 @@ classdef dpe_writing < handle
             % do the writing
             batch_col_complete = obj.batch_set( V_set, V_batch_set_g );
         end
+        
+        function output = VMM_hardware(obj, appliedRowVoltages_M)
+            % configurations
+            Total_Rows = 128;
+            Total_Cols = 64;
+            Gate_Voltage = zeros(1,Total_Cols) + 5; 
+            Gate_Voltage(47:49) = 0;
+            Gate_Voltage(61) = 0;
+            Gate_Voltage(64) = 0;
+            TIA_GAIN = 1;
+            Pulse_Width = 1000;
+            Row_Enable = '255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255';
+            Col_Enable = '255,255,255,255,255,255,255,255';
+            Repeat = 1;
+            Row_DAC_Span = 5;
+            
+            Data_Rows = size(appliedRowVoltages_M,1);
+            Vol_Only = 0;
+            
+            % dummy
+            dummy_row = 2;
+            Firmware_batch_dpe(obj.serDPE,Vol_Only,appliedRowVoltages_M(1:dummy_row,:) ,Total_Rows,Total_Cols,Gate_Voltage,TIA_GAIN,Pulse_Width,Row_Enable,Col_Enable,Repeat);
+            
+            % start
+            output = Firmware_batch_dpe(obj.serDPE,Vol_Only,appliedRowVoltages_M(1:dummy_row,:) ,Total_Rows,Total_Cols,Gate_Voltage,TIA_GAIN,Pulse_Width,Row_Enable,Col_Enable,Repeat);
+        end
     end
 end

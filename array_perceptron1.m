@@ -110,7 +110,7 @@ classdef array_perceptron1
             a = padarray(V_in,obj.net_corner(1),0,'pre'); % throwaway
             b = padarray(a,obj.array_size(1)-obj.net_corner(1)-obj.net_size(1),0,'post');
             
-            raw_V = V_MAX*b/max(b(:));
+            raw_V = transpose( V_MAX*b/max(b(:)) );
             
             % HARDWARE CALL:
             figure(1); clf; 
@@ -124,6 +124,8 @@ classdef array_perceptron1
             end
             
             raw_out = obj.array.VMM_hardware(raw_V);
+            raw_out = transpose( raw_out);
+            
             I_out = raw_out(obj.net_corner(2):obj.net_corner(2)+obj.net_size(2),:);
         end
         
@@ -136,7 +138,7 @@ classdef array_perceptron1
             ranks = zeros(ntests, 1); 
             
             for i=1:ntests
-                ranks(i) = sum(outs(:,i) >= out(labels(i))); 
+                ranks(i) = sum(outs(:,i) >= outs(labels(i))); 
             end
             err = sum(ranks ~= 1)./ntests;
             
