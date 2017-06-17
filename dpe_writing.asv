@@ -131,7 +131,7 @@ classdef dpe_writing < handle
                 V_batch_reset = ones( obj.TOL_ROW, obj.TOL_COL ) * V_batch_reset;
             end
             
-            if numel(V_batch_gate_reset) == 1
+            if numel(V_batch_gate_set) == 1
                 V_batch_gate_reset = ones( obj.TOL_ROW, obj.TOL_COL ) * V_batch_gate_reset;
             end
             
@@ -149,37 +149,21 @@ classdef dpe_writing < handle
             batch_row_complete = batchresetDPE128x64(obj.serDPE, batch_row_parameters1_b, V_batch_reset(65:128,1:64), V_batch_gate_reset(65:128,1:64));
         end
         
-        function batch_col_complete = write_pattern_oneshot(obj, M_pattern )
-            % Do the one-shot conductance writing into the crossbar array
-            % @param M_pattern the pattern we want to write into the
-            % crossbar array;
-            
-            % parameters that related to the specific array
+        function write_pattern_oneshot( M_pattern )
             V_reset = 1.8;
             V_reset_g = 5;
             V_set = 2.5;
             V_set_g_range = [0.6 1.6];
-            
-            % initialize the G pattern to HRS
-            obj.batch_reset( V_reset, V_reset_g );      
-            
-            % prepare the gate matrix
-            if (max(M_pattern(:)) - min(M_pattern(:))) ~= 0
-                V_batch_set_g = ( M_pattern - min(M_pattern(:)) ) / ...
-                    (max(M_pattern(:)) - min(M_pattern(:)));
 
-                V_batch_set_g = V_batch_set_g * (V_set_g_range(2) - V_set_g_range(1) ) ...
-                    +  V_set_g_range(1);
-            else
-                %uniform pattern
-                V_batch_set_g = ones( obj.TOL_ROW, obj.TOL_COL ) * mean(V_set_g_range);
-            end
-             
-            % soft set to minimize the row-wise interference
-            obj.batch_set( V_set, V_set_g_range(1) ); 
+            obj.batch_reset( V_reset, V_reset_g );
             
-            % do the writing
-            batch_col_complete = obj.batch_set( V_set, V_batch_set_g );
+            V_batch_set = ( M_pattern - min(M_pattern(:)) ) / ...
+                (max(M_pattern(:)) - min(M_pattern(:)));
+            
+            V_batch_set = V_batch_set * (V_set_g_range(2) - V_set_g_range(1) ) ...
+                +  V_set_g_range(1);
+            
+            obj.batch_set( V_set, V_reset_g );
         end
     end
 end
