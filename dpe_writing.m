@@ -108,12 +108,12 @@ classdef dpe_writing < handle
             batch_col_parameters2_b = [17, obj.CB_NUMBER, obj.RB_NUMBER, obj.SLOW_COL_PULSE_WIDTH_WRITE, 10, 1]; % Slow pulse set; Here we use 10 as COL_DAC_BATCH_SPAN instead of 5 to force high/low switch to HIGH. Actually this function sets the device with postive voltages.
 
             % Program top 64x64
-            return2top = returntop(obj.serDPE);
+            returntop(obj.serDPE);
             display(['Column positive voltages to top 64x64 array.']);
             batch_col_complete = batchsetDPE128x64(obj.serDPE, batch_col_parameters2, V_batch_set(1:64,1:64), V_batch_gate_set(1:64,1:64));
             display(batch_col_complete);
             % Program bottom 64x64;
-            return2top = returntop(obj.serDPE);
+            returntop(obj.serDPE);
             display(['Column positive voltages to bottom 64x64 array.']);
             batch_col_complete = batchsetDPE128x64(obj.serDPE, batch_col_parameters2_b, V_batch_set(65:128,1:64), V_batch_gate_set(65:128,1:64));
         end
@@ -123,12 +123,12 @@ classdef dpe_writing < handle
             batch_row_parameters1_b = [11, obj.CB_NUMBER, obj.RB_NUMBER, obj.ROW_PULSE_WIDTH_WRITE, obj.COL_DAC_BATCH_SPAN, obj.ROW_DAC_BATCH_SPAN,1]; % Fast pulse reset; Actually function resets the device with postive voltages.
             
             % Program top 64x64
-            return2top = returntop(obj.serDPE);
+            returntop(obj.serDPE);
             display(['Row positive voltages to top 64x64 array.']);
             batch_row_complete = batchresetDPE128x64(obj.serDPE, batch_row_parameters1, V_batch_reset(1:64,1:64), V_batch_gate_reset(1:64,1:64));
             display(batch_row_complete);
             % Program bottom 64x64;
-            return2top = returntop(obj.serDPE);
+            returntop(obj.serDPE);
             display(['Row positive voltages to bottom 64x64 array.']);
             batch_row_complete = batchresetDPE128x64(obj.serDPE, batch_row_parameters1_b, V_batch_reset(65:128,1:64), V_batch_gate_reset(65:128,1:64));
         end
