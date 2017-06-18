@@ -46,22 +46,8 @@ while (get(serDPE, 'BytesAvailable')~=0)
         if strcmp(sentence(1:5),'Batch')
             disp('Batch read complete')
         else
-            if n == 4
-                temp = textscan(sentence, '%u,%u,%u,%u');
-            end
-            if n == 8
-                temp = textscan(sentence, '%u,%u,%u,%u,%u,%u,%u,%u');
-            end
-            if n == 16
-                temp = textscan(sentence, '%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u');
-            end
-            if n == 32
-                temp = textscan(sentence, '%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u');
-            end
-            if n == 64
-                temp = textscan(sentence, '%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u');
-            end
-            if readline < n + 1
+            temp = textscan(sentence, repmat('%u,',1,n));
+            if readline <= n
                 rawADCValueCell(readline,:) = temp;
             end
             readline = readline + 1;
