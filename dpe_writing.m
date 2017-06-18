@@ -187,9 +187,9 @@ classdef dpe_writing < handle
             Total_Rows = 128;
             Total_Cols = 64;
             Gate_Voltage = zeros(1,Total_Cols) + 5; 
-            Gate_Voltage(47:49) = 0;
-            Gate_Voltage(61) = 0;
-            Gate_Voltage(64) = 0;
+%             Gate_Voltage(47:49) = 0;
+%             Gate_Voltage(61) = 0;
+%             Gate_Voltage(64) = 0;
             TIA_GAIN = 1;
             Pulse_Width = 1000;
             Row_Enable = '255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255';
